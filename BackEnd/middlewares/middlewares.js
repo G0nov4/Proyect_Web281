@@ -15,7 +15,7 @@ module.exports = {
     isLoggedIn: (req,res,next)=>{
         // SIN LA PALABRA Bearer ANTES DEL token
         let token = req.headers.authorization;
-      
+        
         if (!token) {
             return res.status(401).send({ ok: false, Message: 'Token invalido' });
         }
@@ -26,6 +26,7 @@ module.exports = {
                     return res.status(401).send({ ok: false, Message: 'No se pudo verificar el token' });
                 } else {
                     req.token = token
+                    
                     next();
                 }
             });
@@ -33,25 +34,20 @@ module.exports = {
     },
     isAdmin: (req,res,next)=>{
         const rol = req.token.rol;
-        
         if (rol == "administrador")
             return next();
         res.status(401).send({ Message: 'Usted no tiene permiso!' });
     },
     isGerente: (req,res,next)=>{
         const rol = req.token.rol;
-        const rolEmpleado = rol.filter((element) => (element.tipo === 'gerente'));
-        const rolAdmin = rol.filter((element) => (element.tipo === 'administrador'));       
-        if (rolEmpleado.length)
-            return next();
-        if (rolAdmin.length)
+     /*    console.log(req.token)  */    
+        if (rol === "gerencial")
             return next();
         res.status(401).send({ Message: 'Usted no tiene permiso!' }); 
     },
     isCliente: (req,res,next)=>{
-        const rol = req.token.rol[0].tipo;
-        if (rol === "gerente")
-            return next();
+        const rol = req.token.rol;
+        console.log(req.token) 
         if (rol === "usuario")
             return next();
         return res.status(401).send({ Message: 'Usted no tiene permiso!' }); 

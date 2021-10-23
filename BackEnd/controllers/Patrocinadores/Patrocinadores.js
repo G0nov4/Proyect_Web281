@@ -1,5 +1,9 @@
-const { NetworkAuthenticationRequire } = require('http-errors');
-const pool = require('../database/config');
+
+const pool = require('../../database/config');
+const fs = require('fs-extra');
+const cloudinary = require('cloudinary');
+
+
 
 
 module.exports = {
@@ -11,6 +15,7 @@ module.exports = {
             }
             return res.status(404).send({message: "no hay patrocinadores para mostrar"});
         } catch (error) {
+            res.send({Message : "Hubo un error en la consulta, vuelva a intentarlo"});
             console.error(error);
         }
     },
@@ -26,20 +31,26 @@ module.exports = {
             console.error(error);
         }
     },
-    createPatrocinador: async (req,res)=>{
-        const newPatrocinador = {
-            nombre: req.body.nombre,
-            Descripcion: req.body.descripcion,
-            logotipo: req.body.logotipo
-        }
-   
-
+    createPatrocinador: async (req,res)=>{d
+       
         try {
-            const consultPatrocinador = await pool.query('SELECT * FROM patrocinadores WHERE nombre = ?',[newPatrocinador.nombre]);
+            const consultPatrocinador = await pool.query('SELECT * FROM patrocinadores WHERE nombre = ?',[req.body.nombre]);
             if(consultPatrocinador.length){
                 return res.status(409).send({Message: "El patrocinador ya existe"})
             }
-
+            cloudinary.config({
+                cloud_name: 'dym8fu7ox',
+                api_key:'315343359263361',
+                api_secret: 'EStgfBjTriGrqTNBujx1xYlQn_I'
+            })
+            console.log(req.file)
+            const imagenSubida = await cloudinary.uploader.upload(req.file.path , function(error, result) {console.log(result, error)});
+            const newPatrocinador = {
+                nombre: req.body.nombre,
+                Descripcion: req.body.descripcion,
+                logotipo: imagenSubida.url
+            }
+            fs.unlink(req.file.path);
             const insertPatrocinador = await pool.query('INSERT INTO patrocinadores SET ?',[newPatrocinador]);
             return res.status(201).send({ Message: 'se creó correctamente!', patrocinador: insertPatrocinador });
 
@@ -49,11 +60,14 @@ module.exports = {
     },
     updatePatrocinador:async (req,res)=>{
         const {id} = req.params;
+ 
+        const imagenSubida = await cloudinary.uploader.upload(req.file.path , function(error, result) {console.log(result, error)});
         const Patrocinador = {
             nombre: req.body.nombre,
             Descripcion: req.body.descripcion,
-            logotipo: req.body.logotipo
+            logotipo: imagenSubida.url
         }
+        await fs.unlink(req.file.path);
         try {
             const consultarPatrocinador =  await  pool.query('SELECT * FROM patrocinadores WHERE idPatrocinador = ?',[id]);
             if(consultarPatrocinador.length){
@@ -66,7 +80,7 @@ module.exports = {
         }
     },
     deletePatrocinador:async (req,res)=>{
-        const {id }= req.params;
+        const {id}= req.params;
         try{
             const consultarPatrocinador =  await  pool.query('SELECT * FROM patrocinadores WHERE idPatrocinador = ?',[id]);
             if(consultarPatrocinador.length){

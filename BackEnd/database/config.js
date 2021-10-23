@@ -3,10 +3,10 @@ const { promisify } = require('util');
 
 
 const config = {
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'dbWeb'
+    host: process.env.CLEVER_CLOUD_HOST,
+    user: process.env.CLEVER_CLOUD_USER,
+    password: process.env.CLEVER_CLOUD_PWD,
+    database: process.env.CLEVER_CLOUD_DB
 }
 
 // Create a mysql pool

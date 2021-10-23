@@ -1,93 +1,95 @@
 --  Creamos la super entidad de usuarios
-DROP TABLE IF EXIST 'usuario_root';
+DROP TABLE IF EXISTS usuario_root;
 CREATE TABLE usuario_root
 (
-	idRoot INT NOT NULL AUTO_INCREMENT,
+	idRoot INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100),
 	username VARCHAR(20),
 	email VARCHAR(50),
 	password VARCHAR(200),
-	tipo VARCHAR(50) NOT NULL DEFAULT 'Admin'
+	tipo VARCHAR(50) NOT NULL DEFAULT 'administrador'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXIST 'usuario_gerencial';
-CREATE TABLE usuario_root
+DROP TABLE IF EXISTS usuario_gerencial;
+CREATE TABLE usuario_gerencial
 (
-	idGerencial INT NOT NULL AUTO_INCREMENT,
+	idGerencial INT PRIMARY KEY  NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100),
 	apellido VARCHAR(100),
 	username VARCHAR(20),
 	email VARCHAR(50),
 	password VARCHAR(200),
-	tipo VARCHAR(50) NOT NULL DEFAULT 'Gerencial'
+	tipo VARCHAR(50) NOT NULL DEFAULT 'gerencial'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 
-DROP TABLE IF EXIST 'usuario_cliente';
+DROP TABLE IF EXISTS usuario_cliente;
 CREATE TABLE usuario_cliente
 (
-	idCliente INT NOT NULL AUTO_INCREMENT,
+	idCliente INT  PRIMARY KEY NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100),
 	apellido VARCHAR(100),
 	username VARCHAR(20),
 	email VARCHAR(50),
 	password VARCHAR(200),
-	tipo VARCHAR(50) NOT NULL DEFAULT 'user'
+	tipo VARCHAR(50) NOT NULL DEFAULT 'usuario'
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE Proyectos
+DROP TABLE IF EXISTS proyectos;
+CREATE TABLE proyectos
 (
-	idProyecto INT NOT NULL AUTO_INCREMENT,
-	idGerente INT, 
-	isValidate BOOL NOT NULL,
+	idProyecto INT PRIMARY KEY  NOT  NULL AUTO_INCREMENT,
+	idGerencial INT, 
+	isValidate BOOLEAN NOT NULL,
 	nombre VARCHAR(255),
 	objetivo TEXT NOT NULL,
 	mision TEXT NOT NULL,
 	vision TEXT NOT NULL,
 	logotipo VARCHAR(255) NOT NULL,
-	FOREIGN KEY (idGerente) REFERENCIA usuario_gerencial(idGerencial) 
-)
+	FOREIGN KEY (idGerencial) REFERENCES usuario_gerencial(idGerencial) 
+);
 
 
-DROP TABLE IF EXIST 'comentarios';
+DROP TABLE IF EXISTS comentarios;
 CREATE TABLE comentarios
 (
+	idComentario INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	idCliente INT,
 	idProyecto INT,
 	comentario TEXT NOT NULL,
-	FOREIGN KEY (idCliente) REFERENCIA usuario_cliente(idCliente),
-	FOREIGN KEY (idProyecto) REFERENCIA Proyectos(idProyecto) 
+	FOREIGN KEY (idCliente) REFERENCES usuario_cliente(idCliente),
+	FOREIGN KEY (idProyecto) REFERENCES proyectos(idProyecto) 
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 
-DROP TABLE IF EXIST 'patrocinadores';
+DROP TABLE IF EXISTS patrocinadores;
 CREATE TABLE patrocinadores
 (
-	idPatrocinador INT NOT NULL AUTO_INCREMENT,
+	idPatrocinador INT PRIMARY KEY   NOT NULL AUTO_INCREMENT,
 	nombre VARCHAR(100),
 	Descripcion TEXT,
-	logotipo VARCHAR(200),
+	logotipo VARCHAR(200)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 
 
-DROP TABLE IF EXIST 'proy_t_pat';
+DROP TABLE IF EXISTS proy_t_pat;
 CREATE TABLE proy_t_pat
 (
 	idProyecto INT ,
 	idPatrocinador INT,
-	FOREIGN KEY (idProyecto) REFERENCIA Proyectos(idProyecto),
-	FOREIGN KEY (idPatrocinador) REFERENCIA patrocinadores(idPatrocinador) 
+	FOREIGN KEY (idProyecto) REFERENCES proyectos(idProyecto),
+	FOREIGN KEY (idPatrocinador) REFERENCES patrocinadores(idPatrocinador) 
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 
 
-DROP TABLE IF EXIST 'artcul';
+DROP TABLE IF EXISTS artcul;
 CREATE TABLE artcul
 (
 	idProyecto INT,
@@ -96,27 +98,26 @@ CREATE TABLE artcul
 	hora VARCHAR(150) NOT NULL,
 	Descripcion TEXT NOT NULL,
 	imagen VARCHAR(200),
-	FOREIGN KEY (idProyecto) REFERENCIA Proyectos(idProyecto) 
+	FOREIGN KEY (idProyecto) REFERENCES proyectos(idProyecto) 
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
-DROP TABLE IF EXIST 'serprod';
+DROP TABLE IF EXISTS serprod;
 CREATE TABLE serprod
 (
 	idProyecto INT,
 	nombre VARCHAR(150) NOT NULL,
 	tipo VARCHAR(150) NOT NULL,
 	categoria VARCHAR(150) NOT NULL,
-	tipo TEXT NOT NULL,
 	precio INT NOT NULL,
 	stock INT NOT NULL,
-	FOREIGN KEY (idProyecto) REFERENCIA Proyectos(idProyecto) 
+	FOREIGN KEY (idProyecto) REFERENCES proyectos(idProyecto) 
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 
 
-DROP TABLE IF EXIST 'beneficiencia';
+DROP TABLE IF EXISTS beneficiencia;
 CREATE TABLE beneficiencia
 (
 	idProyecto INT,
@@ -124,7 +125,15 @@ CREATE TABLE beneficiencia
 	evento VARCHAR(150) NOT NULL,
 	lugar VARCHAR(150) NOT NULL,
 	actividades TEXT NOT NULL,
-	FOREIGN KEY (idProyecto) REFERENCIA Proyectos(idProyecto) 
+	FOREIGN KEY (idProyecto) REFERENCES proyectos(idProyecto) 
 )ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
+	DROP TABLE IF EXISTS us_reg_proy;
+	CREATE TABLE us_reg_proy
+	(
+		idProyecto INT,
+		idCliente INT,
+		FOREIGN KEY (idProyecto) REFERENCES proyectos(idProyecto),
+		FOREIGN KEY (idCliente) REFERENCES usuario_cliente(idCliente)
+	)ENGINE=InnoDB  DEFAULT CHARSET=utf8;
