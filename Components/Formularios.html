@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularios</title>
+</head>
+<style>
+    *{
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .container
+    {
+        width: 100%;
+        background-color: rgb(255, 255, 255);
+    }
+    .input{
+        width: 100%;
+        padding: 5px 10px;
+    }
+    input{
+        outline: none;
+        padding: 10px 7px;
+        border: none;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+    }
+    input:focus{
+       box-shadow: 0px 0px 4px rgb(84, 158, 255);
+    }
+    textarea{
+        outline: none;
+        resize: none;
+        border-radius: 6px;
+        border: 2px solid black;
+        margin-top: 5px;        
+        padding: 10px;
+        width: 100%;
+    }
+    textarea:focus{
+        border: 2px solid green;
+    }
+    .tab{
+        border:none;
+        padding: 10px;
+        outline: none;
+        background: white;
+        border-radius: 5px;
+        border: 1px solid rgb(84, 158, 255);
+        cursor: pointer;
+    }
+    .tab:hover{
+        background: rgb(84, 158, 255);
+    }
+    .active{
+        background-color: rgb(1, 166, 255);
+    }
+    .forms{
+        width: 100%;
+    
+        padding: 10px;
+    }
+    .forms .forms-options{
+        display: flex;
+        justify-content: space-evenly;
+        width: 100%;
+    }
+    .forms .form-content{
+        display: none;
+    }
+    .servicios_productos{
+        width: 100%;
+        display: flex; 
+        justify-content: space-around;
+        flex-direction: row;
+        flex-wrap: nowrap;
+    }
+    .serprod{
+        margin-top: 10px;
+        width: 200px;
+        border: 1px solid navy;
+    }
+</style>
+<body>
+    <form action="/" method="post" id="formulario" >
+    <h2>Perfil</h2>
+    <div class="container">
+        <div class="input">
+            <textarea name="mision" id="mision" placeholder="Ingresa la Mision" rows="4"></textarea>
+        </div>
+        <div class="input">
+            <textarea name="vision" id="vision" placeholder="Ingresa la vision" rows="3"></textarea>
+        </div>
+        <div class="input">
+            <textarea name="objetivos" id="objetivos" placeholder="Ingresa los objetivos" rows="5"></textarea>
+        </div>
+       <!--  <div class="input">
+            <input type="text" placeholder="Username" name="username" required>
+        </div> -->
+    </div>
+    <h2>Tipos de proyectos</h2>
+    <div class="container">
+        
+        <div class="forms">
+            <div class="forms-options">
+                <button class="tab active" onclick="openTab(event, 'tab-1')">
+                    <div>
+                        <span>
+                            Artistico/Cultural
+                        </span>
+                    </div>
+                </button>
+                <button class="tab" onclick="openTab(event, 'tab-2')">
+                    <div>
+                        <span>
+                            Beneficiencia
+                        </span>
+                    </div>
+                </button>
+                <button class="tab" onclick="openTab(event, 'tab-3')">
+                    <div>
+                        <span>
+                            Servicio/Producto
+                        </span>
+                    </div>
+                </button>
+            </div>
+            <div class="form-content" id="tab-1">
+                <div class="input">
+                    <input type="text" placeholder="Ingrese un lugar" name="lugar" required>
+                </div>
+                <div class="input">
+                    <input type="date" placeholder="Ingrese una fecha" name="fecha" required>
+                </div>
+                <div class="input">
+                    <input type="time" placeholder="Ingrese una hora" name="hora" required>
+                </div>
+                <div class="input">
+                    <textarea name="Descripcion" id="descripcion" placeholder="Ingresa la descripcion de cronograma" rows="5"></textarea>
+                </div>
+                <div class="input">
+                    <input type="file" placeholder="Ingrese una imagen" name="imagen" required>
+                </div>
+            </div>
+            <div class="form-content" id="tab-2">
+                <div class="input">
+                    <input type="text" placeholder="Ingrese El nombre del beneficiario" name="nombre" required>
+                </div>
+                <div class="input">
+                    <input type="text" placeholder="Ingrese el nombre del evento" name="evento" required>
+                </div>
+                <div class="input">
+                    <input type="text" placeholder="Ingrese el nombre del lugar" name="lugar" required>
+                </div>
+                <div class="input">
+                    <textarea name="actividades"  placeholder="Ingresa actividades" rows="5"></textarea>
+                </div>
+            </div> 
+            <div class="form-content servicios_productos" id="tab-3">
+
+                <div class="serprod">
+                    <div class="input">
+                        <input type="text" placeholder="Ingresa un nombre" name="nombre" required>
+                    </div>
+                    <div class="input">
+                        <input type="text" placeholder="Ingresa Servicio/producto" name="tipo" required>
+                    </div>
+                    <div class="input">
+                        <input type="text" placeholder="Ingresa una Categoria" name="categoria" required>
+                    </div>
+                    <div class="input">
+                        <input type="number" placeholder="Ingresa un precio" name="precio" required>
+                    </div>
+                    <div class="input">
+                        <input type="number" placeholder="Ingresa un Stock" name="stock" required>
+                    </div>
+                </div>
+              
+            </div> 
+            <button>Añadir</button>
+        
+
+        </div>
+    </div>
+    <button type="submit">Enviar</button>
+</form>
+    <h2>Patrocinadores</h2>
+    <script>
+        function openTab(evt, tab){
+            let i ,tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("form-content");
+            console.log(tabcontent)
+            for(i = 0; i < tabcontent.length; i++){
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            console.log(evt)
+            document.getElementById(tab).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        
+        
+        function createFormProduct(){
+            const miNodo = document.createElement('div');
+        miNodo.classList.add('serprod');
+
+        let $divInput = document.createElement('div');
+        $divInput.classList.add('input')
+
+
+        let $inputText = document.createElement('input');
+        $inputText.type='text';
+        $inputText.required = true;
+        $inputText.placeholder = "Ingresa un nombre";
+        $inputText.name = "nombre";
+        $divInput.appendChild($inputText);
+        miNodo.appendChild($divInput);
+
+        $divInput = document.createElement('div');
+        $divInput.classList.add('input')
+        $inputText = document.createElement('input');
+        $inputText.type='text';
+        $inputText.required = true;
+        $inputText.placeholder = "Ingresa Servicio/producto";
+        $inputText.name = "tipo";
+        $divInput.appendChild($inputText);
+        miNodo.appendChild($divInput);
+
+
+        $divInput = document.createElement('div');
+        $divInput.classList.add('input')
+        $inputText = document.createElement('input');
+        $inputText.type='text';
+        $inputText.required = true;
+        $inputText.placeholder = "Ingresa una Categoria";
+        $inputText.name = "categoria";
+        $divInput.appendChild($inputText);
+        miNodo.appendChild($divInput);
+        $divInput = document.createElement('div');
+        $divInput.classList.add('input')
+       
+        $inputText = document.createElement('input');
+        $inputText.type='number';
+        $inputText.required = true;
+        $inputText.placeholder = "Ingresa un precio";
+        $inputText.name = "precio";
+        $divInput.appendChild($inputText);
+        miNodo.appendChild($divInput);
+
+
+        $divInput = document.createElement('div');
+        $divInput.classList.add('input')
+        $inputText = document.createElement('input');
+        $inputText.type='number';
+        $inputText.required = true;
+        $inputText.placeholder = "Ingresa un Stock";
+        $inputText.name = "stock";
+        $divInput.appendChild($inputText);
+        miNodo.appendChild($divInput);
+         
+        return miNodo
+        }
+        const tab3 = document.getElementById('tab-3');
+        
+        const $form = document.getElementById('formulario');
+      
+        $form.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            const formData = new FormData($form);
+            console.log(formData)
+        })
+
+    </script>
+</body>
+</html>
