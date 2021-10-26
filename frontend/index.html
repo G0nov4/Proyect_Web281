@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="./php/contactar.php" method="post">
+        <ul>
+          <li>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="usernma" required>
+          </li>
+          <li>
+            <label for="asunto">Asunto:</label>
+            <input type="text" id="asunto" name="asunto" required>
+          </li>
+          <li>
+             <label for="mensaje">Mensaje:</label>
+             <textarea id="mensaje" name="mensaje" cols="30" rows="10" required></textarea>
+          </li>
+          <li>
+            <input type="checkbox" id="priv" name="priv" value="ok" required>
+            <label for="priv">Acepto las <a href="#">condiciones de privacidad</a>.</label>
+          </li>
+        </ul>
+        <div>
+          <input type="submit">
+        </div>
+        <div class="form-msg"></div>
+      </form>
+</body>
+<script>
+fetch('http://localhost:3010/api/ingreso',{
+    method: 'POST',
+    body: {
+      username: "G0nov4",
+      password: "garynova12345"
+    }
+})
+.then(res => res.json())
+.then(res => )
+.catch( err => console.error(err));
+</script>
+</html>

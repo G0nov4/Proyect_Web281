@@ -102,11 +102,11 @@
             .then(data => data.json())
             .then(respuesta =>{
 
-                console.log(respuesta)
                 const rol = respuesta.rol;
                 const token = respuesta.token;
-
                 localStorage.setItem('Authorization', token);
+
+
                 console.log("Esta es la respuesta del servidor: ", respuesta)
                 if(rol === 'administrador'){
                     window.location = '/home/g0nov4/Universidad/INF-281/Proyecto_Web/Components/PanelAdmin.html';
